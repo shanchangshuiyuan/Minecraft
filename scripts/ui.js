@@ -1,8 +1,13 @@
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { resources } from "./blocks";
 
-export function createUI(world) {
+export function createUI(world, player) {
   const gui = new GUI();
+
+  const playerFolder = gui.addFolder('Player');
+  playerFolder.add(player, 'maxSpeed', 1, 20, 0.1).name('Max Speed');
+
+  playerFolder.add(player.cameraHelper, 'visible').name('Show Camera Helper');
 
   gui.add(world.size, "width", 8, 128, 1).name("Width");
   gui.add(world.size, "height", 8, 64, 1).name("Height");
@@ -13,7 +18,7 @@ export function createUI(world) {
   terrainFolder.add(world.params.terrain, "magnitude", 0, 1).name("Magnitude");
   terrainFolder.add(world.params.terrain, "offset", 0, 1).name("Ground Offset");
 
-  const resourcesFolder = gui.addFolder("Resources");
+  const resourcesFolder = gui.addFolder("Resources").close();
   for (const resource of resources) {
     const resourceFolder = resourcesFolder.addFolder(resource.name);
     resourceFolder.add(resource, "scarcity", 0, 1).name("Scarcity");
